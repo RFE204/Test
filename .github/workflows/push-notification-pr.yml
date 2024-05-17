@@ -1,7 +1,15 @@
 name: Push Notification
 
-on: [push]
-
+on:
+    push:
+        branches:
+            - main
+            - dev
+            - dev-*
+            - test 
+    pull_request:
+        types: [opened, synchronize, reopened, closed]
+ 
 jobs:
   notify:
     runs-on: ubuntu-latest
@@ -15,5 +23,11 @@ jobs:
           to:       ${{ secrets.MAIL_TO }}     # push işlemi olduğunda bu mail kime gitsin
           username: ${{ secrets.MAIL_USERNAME }} # mail gönderme işlemi için kullanacağınız mail adresi, mail nereden atılacak
           password: ${{ secrets.MAIL_PASSWORD }} # o mail adresinin şifresi
-          subject: "Push Notification" # mail konusu
-          body: "Push Notification" # mail içeriği
+          subject: ${{ github.event_name}} Notification # mail konusu
+          body:  |
+           There has been a new ${{ github.event_name }} in the repository.
+           Repository  : ${{ github.repository }}
+           Branch      : ${{ github.ref }}
+           Action by   : ${{ github.actor }}
+           Action      : ${{ github.event.action}}
+
