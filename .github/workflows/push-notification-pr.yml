@@ -1,15 +1,15 @@
-name: Push Notification
+name: Push and Pull Request Notification
 
 on:
-    push:
-        branches:
-            - main
-            - dev
-            - dev-*
-            - test 
-    pull_request:
-        types: [opened, synchronize, reopened, closed]
- 
+  push:
+    branches:
+      - main
+      - dev
+      - 'dev-*'
+      - test
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
 jobs:
   notify:
     runs-on: ubuntu-latest
@@ -18,16 +18,17 @@ jobs:
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
-          server_port: 465
-          from:     ${{ secrets.MAIL_FROM }} # mail gönderdiğinizde ne görünsün örneğin: "GitHub Action"
-          to:       ${{ secrets.MAIL_TO }}     # push işlemi olduğunda bu mail kime gitsin
-          username: ${{ secrets.MAIL_USERNAME }} # mail gönderme işlemi için kullanacağınız mail adresi, mail nereden atılacak
-          password: ${{ secrets.MAIL_PASSWORD }} # o mail adresinin şifresi
-          subject: ${{ github.event_name}} Notification # mail konusu
-          body:  |
-           There has been a new ${{ github.event_name }} in the repository.
-           Repository  : ${{ github.repository }}
-           Branch      : ${{ github.ref }}
-           Action by   : ${{ github.actor }}
-           Action      : ${{ github.event.action}}
-
+          server_port: 587 # Gmail SMTP server typically uses port 587 for TLS/STARTTLS
+          from: ${{ secrets.MAIL_FROM }} # e.g., "GitHub Action <your-email@gmail.com>"
+          to: ${{ secrets.MAIL_TO }} # e.g., "recipient-email@gmail.com"
+          username: ${{ secrets.MAIL_USERNAME }} # e.g., "your-email@gmail.com"
+          password: ${{ secrets.MAIL_PASSWORD }} # e.g., "your-email-password"
+          subject: "${{ github.event_name }} Notification"
+          body: |
+            There has been a new ${{ github.event_name }} event in the repository.
+            
+            **Details:**
+            - **Repository:** ${{ github.repository }}
+            - **Branch:** ${{ github.ref }}
+            - **Action by:** ${{ github.actor }}
+            - **Action type:** ${{ github.event.action }}
