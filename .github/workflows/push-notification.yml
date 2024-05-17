@@ -11,9 +11,9 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          from: ${{ secrets.MAIL_FROM }}
-          to: ${{ secrets.MAIL_TO }}
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "Push Notification"
-          body: "Push Notification"
+          from: ${{ secrets.MAIL_FROM }} # mail gönderdiğinizde ne görünsün örneğin: "GitHub Action"
+          to: ${{ secrets.MAIL_TO }}     # push işlemi olduğunda bu mail kime gitsin
+          username: ${{ secrets.MAIL_USERNAME }} # mail gönderme işlemi için kullanacağınız mail adresi, mail nereden atılacak
+          password: ${{ secrets.MAIL_PASSWORD }} # o mail adresinin şifresi
+          subject: "Push Notification" # mail konusu
+          body: "Push Notification" # mail içeriği
